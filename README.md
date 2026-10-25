@@ -18,23 +18,18 @@
 
 ## 📌 Overview
 
-Offline BIND / PowerDNS / Unbound / Knot Resolver configuration auditor
+OBindX is an offline, read-only auditor for DNS server configuration, covering BIND 9, PowerDNS Authoritative and Recursor, Unbound and Knot Resolver. A recursive parser for the named.conf dialect plus product-specific analysers flag open resolvers, AXFR-to-any, exposed controls, DNSSEC gaps and weak TSIG, and a zone-file analyzer reviews SOA timers, NS redundancy and signing. Findings map to CWE and MITRE ATT&CK with a 0–100 score, A+…F grade and hardened templates, and it never queries DNS.
 
 ---
 
 ## ✨ Features
 
-- Recursive brace/statement parser for the BIND 9 named.conf dialect (comments, quoted strings, nested blocks, address-match lists, include resolution)
-- BIND checks — open resolver (amplification), AXFR to any, rndc controls exposure, version / hostname disclosure, DNSSEC validation, RRL absent, query-source fixed port, dynamic update to any, weak TSIG algorithms, world-readable key files
-- Zone file analyzer — SOA timers, NS redundancy, unsigned zones where policy requires DNSSEC, weak DNSKEY algorithms, RFC1918 leaks, wildcards
-- PowerDNS Authoritative (pdns.conf) and Recursor (recursor.conf) auditors — API keys, webserver ACLs, AXFR, dynamic updates, backend passwords (masked)
-- Unbound auditor — access-control, harden-*, QNAME minimisation, aggressive NSEC, permissive validation, remote-control without certificates
-- Knot Resolver (kresd.conf) auditor — listeners, views/ACLs, trust anchors, management endpoints
-- Auto-discovery under a root directory (--root/--scan)
-- CWE + MITRE ATT&CK mapping, 0–100 score, A+…F grade
-- Hardened configuration templates for every server
-- Exports TXT/MD/JSON/CSV/SARIF; --demo self-test
-- Strictly read-only and offline — never queries DNS
+- Recursive named.conf parser plus PowerDNS, Unbound and Knot Resolver auditors
+- BIND checks: open resolver, AXFR to any, rndc exposure, DNSSEC, RRL, dynamic update
+- Zone-file analysis: SOA timers, NS redundancy, unsigned zones, weak DNSKEY algorithms
+- Secrets masked; auto-discovery under --root or on the live system
+- CWE + MITRE ATT&CK mapping, 0–100 score and A+…F grade
+- Hardened templates per server and export TXT/MD/JSON/CSV/SARIF
 
 ---
 
@@ -48,7 +43,10 @@ Offline BIND / PowerDNS / Unbound / Knot Resolver configuration auditor
 ## 🚀 Usage
 
 ```bash
-./OBindX
+./OBindX --scan
+./OBindX --bind /etc/bind/named.conf --format sarif -o report.sarif --fail-on high
+./OBindX --zone db.example.com --signed
+./OBindX --help
 ```
 
 ---
